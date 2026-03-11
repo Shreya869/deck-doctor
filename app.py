@@ -12,15 +12,176 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-    .main { max-width: 750px; }
-    h1 { font-size: 1.8rem; font-weight: 700; }
-    .subtitle { color: #888; font-size: 0.95rem; margin-top: -10px; margin-bottom: 30px; }
-    .score-box { padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif;
+    }
+
+    .block-container {
+        max-width: 760px;
+        padding-top: 2rem;
+    }
+
+    /* hero */
+    .hero {
+        background: linear-gradient(135deg, #0f173c 0%, #1a1f4e 60%, #2d1b69 100%);
+        border-radius: 20px;
+        padding: 40px 36px 32px;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero::before {
+        content: "";
+        position: absolute;
+        width: 220px; height: 220px;
+        background: radial-gradient(circle, rgba(99,84,230,0.35) 0%, transparent 70%);
+        top: -60px; right: -60px;
+        border-radius: 50%;
+    }
+    .hero::after {
+        content: "";
+        position: absolute;
+        width: 150px; height: 150px;
+        background: radial-gradient(circle, rgba(255,99,107,0.2) 0%, transparent 70%);
+        bottom: -40px; left: 20px;
+        border-radius: 50%;
+    }
+    .hero-badge {
+        display: inline-block;
+        background: rgba(99,84,230,0.3);
+        border: 1px solid rgba(99,84,230,0.5);
+        color: #a99ef5;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+    }
+    .hero-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0 0 8px 0;
+        line-height: 1.2;
+    }
+    .hero-sub {
+        color: #9da4c7;
+        font-size: 1rem;
+        margin: 0;
+        line-height: 1.5;
+    }
+    .hero-pills {
+        margin-top: 20px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .pill {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: #c5c9e8;
+        font-size: 0.78rem;
+        padding: 4px 12px;
+        border-radius: 20px;
+    }
+
+    /* upload card */
+    .upload-card {
+        background: #f7f7ff;
+        border: 2px dashed #c5bef7;
+        border-radius: 16px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+    }
+    .upload-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #3d3580;
+        margin-bottom: 8px;
+    }
+
+    /* result card */
+    .result-card {
+        background: #ffffff;
+        border: 1px solid #e8e6ff;
+        border-radius: 16px;
+        padding: 28px 28px;
+        margin-top: 8px;
+        box-shadow: 0 4px 24px rgba(99,84,230,0.07);
+    }
+    .result-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1a1740;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* stButton primary */
+    .stButton > button[kind="primary"] {
+        background: linear-gradient(135deg, #6354e6, #8b5cf6) !important;
+        border: none !important;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        padding: 0.6rem 1.5rem !important;
+        color: white !important;
+        box-shadow: 0 4px 14px rgba(99,84,230,0.35) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stButton > button[kind="primary"]:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 20px rgba(99,84,230,0.45) !important;
+    }
+
+    .stDownloadButton > button {
+        border-radius: 10px !important;
+        border: 1.5px solid #6354e6 !important;
+        color: #6354e6 !important;
+        font-weight: 500 !important;
+    }
+
+    /* inputs */
+    .stTextInput > div > div > input {
+        border-radius: 10px !important;
+        border: 1.5px solid #ddd9ff !important;
+        font-size: 0.93rem !important;
+    }
+    .stTextInput > div > div > input:focus {
+        border-color: #6354e6 !important;
+        box-shadow: 0 0 0 3px rgba(99,84,230,0.12) !important;
+    }
+
+    /* file uploader */
+    [data-testid="stFileUploader"] {
+        border-radius: 12px !important;
+    }
+
+    h3 { color: #1a1740; font-weight: 700; }
+    hr { border-color: #ede9ff; margin: 24px 0; }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("# 🩺 deck doctor")
-st.markdown('<p class="subtitle">upload a pitch deck or pitchbook → get a structured AI review in seconds</p>', unsafe_allow_html=True)
+st.markdown("""
+<div class="hero">
+    <div class="hero-badge">AI-powered</div>
+    <div class="hero-title">🩺 deck doctor</div>
+    <p class="hero-sub">upload a pitch deck or pitchbook and get a structured review — the way a Managing Director would read it.</p>
+    <div class="hero-pills">
+        <span class="pill">pitch decks</span>
+        <span class="pill">pitchbooks</span>
+        <span class="pill">CIMs</span>
+        <span class="pill">investment memos</span>
+        <span class="pill">strategy docs</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 
 def get_client():
@@ -83,6 +244,8 @@ context = st.text_input(
     help="helps the AI calibrate its feedback to the right standard"
 )
 
+st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
 if st.button("analyse deck", type="primary", use_container_width=True):
     if not uploaded_file:
         st.error("upload a PDF first")
@@ -137,11 +300,29 @@ if st.button("analyse deck", type="primary", use_container_width=True):
                 st.error(f"analysis failed: {e}")
                 st.stop()
 
-        st.markdown("---")
-        st.markdown("### deck review")
-        st.markdown(analysis)
+        st.markdown(f"""
+        <div style="display:flex; gap:12px; margin: 20px 0 8px 0; flex-wrap:wrap;">
+            <div style="background:#f0edff; border-radius:10px; padding:10px 18px; flex:1; min-width:140px;">
+                <div style="font-size:0.72rem; color:#7c6fd4; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">file</div>
+                <div style="font-size:0.9rem; color:#1a1740; font-weight:500; margin-top:2px;">{uploaded_file.name}</div>
+            </div>
+            <div style="background:#f0edff; border-radius:10px; padding:10px 18px; flex:1; min-width:140px;">
+                <div style="font-size:0.72rem; color:#7c6fd4; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">pages extracted</div>
+                <div style="font-size:0.9rem; color:#1a1740; font-weight:500; margin-top:2px;">{len(text_pages)} pages</div>
+            </div>
+            <div style="background:#f0edff; border-radius:10px; padding:10px 18px; flex:1; min-width:140px;">
+                <div style="font-size:0.72rem; color:#7c6fd4; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">model</div>
+                <div style="font-size:0.9rem; color:#1a1740; font-weight:500; margin-top:2px;">llama 3.3 70b</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-        st.markdown("---")
+        st.markdown('<div class="result-card">', unsafe_allow_html=True)
+        st.markdown('<div class="result-title">🩺 deck review</div>', unsafe_allow_html=True)
+        st.markdown(analysis)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
         st.download_button(
             "download review as .txt",
             analysis,
